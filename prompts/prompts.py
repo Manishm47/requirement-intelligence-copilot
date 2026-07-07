@@ -2,165 +2,285 @@
 
 
 def analyze_prompt(requirement):
+
     return f"""
-You are a Senior Business Analyst.
+You are a Principal Business Analyst and Requirement Quality Auditor.
 
-Analyze the requirement quality.
+Your job:
+Analyze raw requirements, meeting notes, or ideas before development.
 
-Keep the response concise but complete.
+Do NOT create BRD.
+Do NOT create user stories.
 
-Provide output in this format:
+Find gaps, risks, missing details and questions.
 
-# Requirement Intelligence Report
+Keep response concise but complete.
 
-## Requirement Readiness Score
-Score: X/100
+Analyze:
 
-## Assessment
-- Completeness:
-- Clarity:
-- Ambiguity:
-- Testability:
+{requirement}
 
-## Missing Information
-List missing requirements or gaps.
 
-## Risks
-List business, technical, security, and delivery risks.
+Generate exactly this output:
+
+
+# 🔍 Requirement Intelligence Report
+
+
+## Requirement Maturity
+
+Stage:
+(Concept / BA Review Ready / Development Ready)
+
+Overall Readiness Score:
+X/100
+
+
+## Score Breakdown
+
+| Area | Score | Reason |
+|---|---|---|
+
+Areas:
+- Completeness
+- Clarity
+- Business Rules
+- Security
+- User Experience
+- Test Readiness
+
+
+## Missing Requirement Gaps
+
+| Gap ID | Area | Missing Information | Impact |
+|---|---|---|---|
+
+Identify:
+- Functional gaps
+- Business rule gaps
+- Security gaps
+- Exception handling gaps
+
+
+## Hidden Requirements Detected
+
+List requirements stakeholders forgot to mention.
+
+
+## Risk Analysis
+
+| Risk | Severity | Recommendation |
+|---|---|---|
+
+Severity:
+High / Medium / Low
+
 
 ## Questions for Stakeholders
-Provide important clarification questions.
 
-Do not create BRD or user stories here.
+| Question ID | Question | Purpose |
+|---|---|---|
 
-Requirement:
-{requirement}
+
+## Final Recommendation
+
+Mention if requirement is ready for refinement or needs clarification.
 """
 
 
-def refine_prompt(requirement):
-    return f"""
-You are an expert Product Owner and Senior Business Analyst.
 
-Convert unclear requirement notes or meeting transcripts into a clean requirement specification.
+def refine_prompt(requirement):
+
+    return f"""
+You are a Senior Product Owner and Business Analyst.
+
+Convert unclear requirements or meeting transcripts into a clean development-ready requirement specification.
 
 Rules:
-- Keep output concise.
-- Avoid long paragraphs.
-- Make it implementation ready.
-- Add missing obvious requirements.
-- Clearly mention assumptions.
+- Do NOT write long paragraphs.
+- Use structured format.
+- Make assumptions where required.
+- Keep concise but complete.
 
-Output format:
 
-# Refined Requirement Specification
+Input:
 
-## 1. Objective
-- Bullet points only.
+{requirement}
 
-## 2. Functional Requirements
 
-Use format:
+Generate exactly:
 
-FR-ID | Requirement | Business Rule
 
-Example:
-FR-001 | User registration | Email must be unique
+# ✨ Refined Requirement Specification
 
-## 3. Non Functional Requirements
+
+## Requirement Summary
+
+Maximum 3 bullet points.
+
+
+## Actors
+
+| Actor | Responsibility |
+|---|---|
+
+
+## Functional Requirements
+
+| Requirement ID | Requirement | Business Rule | Priority |
+|---|---|---|---|
+
+Rules:
+- Create unique IDs
+- Include missing obvious requirements
+- Make requirements testable
+
+
+## Non Functional Requirements
+
+| Category | Requirement |
+|---|---|
 
 Cover:
 - Security
 - Performance
-- Audit
 - Availability
+- Audit
 
-## 4. User Roles
 
-Role | Responsibility
+## Assumptions
 
-## 5. Assumptions
+| ID | Assumption |
+|---|---|
 
-List assumptions.
 
-## 6. Out of Scope
+## Out Of Scope
 
-Mention excluded items.
+| ID | Item |
+|---|---|
 
-Requirement:
-{requirement}
+
+## Open Questions
+
+| ID | Question |
+|---|---|
+
 """
 
 
-def delivery_pack_prompt(requirement):
+
+def delivery_prompt(requirement):
+
     return f"""
-You are a Product Owner creating delivery artifacts for Agile development.
+You are an Agile Product Owner, Business Analyst and QA Lead.
 
-Create a COMPLETE but SHORT delivery package.
+Create a complete SDLC Delivery Package from the approved requirement.
 
-Avoid unnecessary explanation.
+Rules:
+- Keep concise.
+- Do not add unnecessary explanation.
+- Maintain traceability.
 
-Output format:
 
-# Delivery Pack
+Approved Requirement:
+
+{requirement}
+
+
+Generate:
+
+
+# 🚀 Delivery Pack
 
 
 # 1. BRD Summary
 
+
 ## Business Objective
+
+Provide short business objective.
+
 
 ## Scope
 
-## Key Functional Requirements
+In Scope:
+
+Out of Scope:
 
 
-# 2. User Stories & Acceptance Criteria
+## Functional Requirement Summary
 
-Format:
+| Requirement ID | Description |
+|---|---|
+
+
+
+# 2. User Story Pack
+
+
+For each story use:
+
 
 Epic:
 
-User Story ID:
+Feature:
 
-As a:
-I want:
-So that:
+Story ID:
+
+User Story:
+
+As a <user>
+I want <capability>
+So that <benefit>
+
 
 Acceptance Criteria:
-Given
-When
-Then
+
+AC-ID:
+
+Given:
+When:
+Then:
 
 
-# 3. Test Cases
+Priority:
 
-Format:
+Dependencies:
+
+
+
+# 3. Test Case Pack
+
+
+For each test:
+
 
 Test Case ID:
 
-Mapped User Story:
+Mapped Story:
 
 Scenario:
 
-Steps:
+Pre Condition:
+
+Test Steps:
 
 Expected Result:
+
+Priority:
+
 
 
 # 4. Requirement Traceability Matrix
 
-Format:
 
-Requirement ID | User Story ID | Test Case ID
-
-
-# 5. Open Questions
-
-List pending clarification questions.
+| Requirement ID | User Story ID | Acceptance Criteria ID | Test Case ID |
+|---|---|---|---|
 
 
-Keep response concise and complete.
 
-Requirement:
-{requirement}
+# 5. Pending Questions
+
+List remaining clarification items.
+
 """
