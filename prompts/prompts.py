@@ -6,22 +6,23 @@ def analyze_prompt(requirement):
     return f"""
 You are a Principal Business Analyst and Requirement Quality Auditor.
 
-Your job:
-Analyze raw requirements, meeting notes, or ideas before development.
+Analyze raw requirements or meeting transcripts.
 
-Do NOT create BRD.
-Do NOT create user stories.
+Your goal:
+Find requirement gaps before development starts.
 
-Find gaps, risks, missing details and questions.
+Rules:
+- Do NOT create BRD.
+- Do NOT create user stories.
+- Keep response concise.
+- Use tables where possible.
 
-Keep response concise but complete.
-
-Analyze:
+Requirement:
 
 {requirement}
 
 
-Generate exactly this output:
+Create output:
 
 
 # 🔍 Requirement Intelligence Report
@@ -30,9 +31,12 @@ Generate exactly this output:
 ## Requirement Maturity
 
 Stage:
-(Concept / BA Review Ready / Development Ready)
+Choose one:
+- Concept
+- Needs Refinement
+- Development Ready
 
-Overall Readiness Score:
+Readiness Score:
 X/100
 
 
@@ -41,30 +45,31 @@ X/100
 | Area | Score | Reason |
 |---|---|---|
 
-Areas:
-- Completeness
-- Clarity
-- Business Rules
-- Security
-- User Experience
-- Test Readiness
+Evaluate:
+Completeness
+Clarity
+Business Rules
+Security
+User Experience
+Test Readiness
 
 
 ## Missing Requirement Gaps
 
-| Gap ID | Area | Missing Information | Impact |
+| Gap ID | Area | Missing Detail | Impact |
 |---|---|---|---|
 
-Identify:
+
+Include:
 - Functional gaps
-- Business rule gaps
+- Business rules
 - Security gaps
-- Exception handling gaps
+- Exception handling
 
 
 ## Hidden Requirements Detected
 
-List requirements stakeholders forgot to mention.
+List hidden requirements.
 
 
 ## Risk Analysis
@@ -72,19 +77,20 @@ List requirements stakeholders forgot to mention.
 | Risk | Severity | Recommendation |
 |---|---|---|
 
-Severity:
-High / Medium / Low
 
+## Stakeholder Questions
 
-## Questions for Stakeholders
-
-| Question ID | Question | Purpose |
+| ID | Question | Purpose |
 |---|---|---|
 
 
 ## Final Recommendation
 
-Mention if requirement is ready for refinement or needs clarification.
+Explain next action.
+
+END WITH:
+
+ANALYSIS COMPLETE
 """
 
 
@@ -92,23 +98,23 @@ Mention if requirement is ready for refinement or needs clarification.
 def refine_prompt(requirement):
 
     return f"""
-You are a Senior Product Owner and Business Analyst.
+You are a Senior Business Analyst.
 
-Convert unclear requirements or meeting transcripts into a clean development-ready requirement specification.
+Convert raw requirements into a development-ready specification.
 
 Rules:
-- Do NOT write long paragraphs.
-- Use structured format.
-- Make assumptions where required.
-- Keep concise but complete.
+- Return ALL sections.
+- Keep short.
+- No long paragraphs.
+- Use structured tables.
+- Add obvious missing requirements.
 
-
-Input:
+Input Requirement:
 
 {requirement}
 
 
-Generate exactly:
+Create output:
 
 
 # ✨ Refined Requirement Specification
@@ -116,7 +122,7 @@ Generate exactly:
 
 ## Requirement Summary
 
-Maximum 3 bullet points.
+Provide maximum 3 bullet points.
 
 
 ## Actors
@@ -127,25 +133,37 @@ Maximum 3 bullet points.
 
 ## Functional Requirements
 
-| Requirement ID | Requirement | Business Rule | Priority |
+Generate minimum 8 functional requirements.
+
+Format:
+
+| ID | Requirement | Business Rule | Priority |
 |---|---|---|---|
 
-Rules:
-- Create unique IDs
-- Include missing obvious requirements
-- Make requirements testable
+
+Must consider:
+- Registration
+- Login
+- Password Reset
+- User Session
+- Admin Management
+- Security
+- Error Handling
+- Audit
 
 
 ## Non Functional Requirements
 
+Format:
+
 | Category | Requirement |
 |---|---|
 
-Cover:
-- Security
-- Performance
-- Availability
-- Audit
+Include:
+Security
+Performance
+Availability
+Audit
 
 
 ## Assumptions
@@ -165,6 +183,10 @@ Cover:
 | ID | Question |
 |---|---|
 
+
+END WITH:
+
+REFINEMENT COMPLETE
 """
 
 
@@ -172,22 +194,23 @@ Cover:
 def delivery_prompt(requirement):
 
     return f"""
-You are an Agile Product Owner, Business Analyst and QA Lead.
+You are a Product Owner, Business Analyst and QA Lead.
 
-Create a complete SDLC Delivery Package from the approved requirement.
+Generate SDLC delivery artifacts.
 
 Rules:
+- Keep complete.
 - Keep concise.
-- Do not add unnecessary explanation.
 - Maintain traceability.
+- Avoid unnecessary explanation.
 
 
-Approved Requirement:
+Requirement:
 
 {requirement}
 
 
-Generate:
+Create output:
 
 
 # 🚀 Delivery Pack
@@ -198,14 +221,14 @@ Generate:
 
 ## Business Objective
 
-Provide short business objective.
+Short objective.
 
 
 ## Scope
 
 In Scope:
 
-Out of Scope:
+Out Of Scope:
 
 
 ## Functional Requirement Summary
@@ -215,23 +238,21 @@ Out of Scope:
 
 
 
-# 2. User Story Pack
+# 2. User Stories with Acceptance Criteria
 
 
-For each story use:
+Generate stories:
 
 
 Epic:
-
-Feature:
 
 Story ID:
 
 User Story:
 
-As a <user>
-I want <capability>
-So that <benefit>
+As a:
+I want:
+So that:
 
 
 Acceptance Criteria:
@@ -245,42 +266,40 @@ Then:
 
 Priority:
 
-Dependencies:
 
 
+# 3. Test Cases
 
-# 3. Test Case Pack
 
-
-For each test:
-
+Generate:
 
 Test Case ID:
 
-Mapped Story:
+Mapped User Story:
 
 Scenario:
 
-Pre Condition:
-
-Test Steps:
+Steps:
 
 Expected Result:
 
-Priority:
 
 
+# 4. Traceability Matrix
 
-# 4. Requirement Traceability Matrix
 
-
-| Requirement ID | User Story ID | Acceptance Criteria ID | Test Case ID |
+| Requirement ID | User Story ID | AC ID | Test Case ID |
 |---|---|---|---|
 
 
 
 # 5. Pending Questions
 
-List remaining clarification items.
 
+List open items.
+
+
+END WITH:
+
+DELIVERY PACK COMPLETE
 """
