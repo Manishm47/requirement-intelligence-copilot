@@ -1,194 +1,161 @@
-import streamlit as st
+def analyze_prompt(requirement):
+    return f"""
+You are a Lead Business Analyst.
 
-from services.llm_service import generate_ai_response
-from prompts.prompts import (
-    analyze_prompt,
-    refine_prompt,
-    delivery_pack_prompt
-)
+Analyze the below requirement.
 
+Requirement:
+{requirement}
 
-# -----------------------------
-# Page Config
-# -----------------------------
-st.set_page_config(
-    page_title="Requirement Intelligence Copilot",
-    page_icon="🚀",
-    layout="wide"
-)
+Create a Requirement Intelligence Report.
 
+Return ONLY these sections:
 
-# -----------------------------
-# Session State
-# -----------------------------
-if "analysis" not in st.session_state:
-    st.session_state.analysis = None
+# 🔍 Requirement Intelligence Report
 
-if "refined_requirement" not in st.session_state:
-    st.session_state.refined_requirement = None
+## Requirement Maturity
+Stage:
+Overall Readiness Score: /100
 
-if "delivery_pack" not in st.session_state:
-    st.session_state.delivery_pack = None
+## Score Breakdown
 
+| Area | Score | Reason |
+|---|---|---|
+| Completeness | | |
+| Clarity | | |
+| Business Rules | | |
+| Security | | |
+| User Experience | | |
+| Test Readiness | | |
 
-# -----------------------------
-# Header
-# -----------------------------
-st.title("🚀 Requirement Intelligence Copilot")
+## Missing Requirement Gaps
 
-st.write(
-    "Transform unclear requirements into development-ready SDLC artifacts"
-)
+| Gap ID | Area | Missing Information | Impact |
+|---|---|---|---|
 
+## Hidden Requirements Detected
 
-# -----------------------------
-# Input
-# -----------------------------
-requirement = st.text_area(
-    "Paste Requirement / Meeting Transcript",
-    height=250
-)
+List hidden functional and technical needs.
 
+## Risk Analysis
 
-st.divider()
+| Risk | Severity | Recommendation |
+|---|---|---|
 
+## Questions for Stakeholders
 
-# -----------------------------
-# Workflow Status
-# -----------------------------
-st.subheader("Requirement Intelligence Workflow")
+| Question ID | Question | Purpose |
+|---|---|---|
 
-col1, col2, col3 = st.columns(3)
-
-with col1:
-    if st.session_state.analysis:
-        st.success("✅ Step 1 Completed")
-    else:
-        st.info("① Requirement Analysis")
-
-with col2:
-    if st.session_state.refined_requirement:
-        st.success("✅ Step 2 Completed")
-    else:
-        st.info("② Requirement Enhancement")
-
-with col3:
-    if st.session_state.delivery_pack:
-        st.success("✅ Step 3 Completed")
-    else:
-        st.info("③ SDLC Generation")
+End with:
+ANALYSIS COMPLETE
+"""
 
 
-st.divider()
+def refine_prompt(requirement):
+    return f"""
+You are a Senior Product Owner.
+
+Improve this unclear requirement:
+
+{requirement}
+
+Create a development ready requirement specification.
+
+Return ONLY:
+
+# ✨ Refined Requirement Specification
+
+## Requirement Summary
+
+## Actors
+
+| Actor | Responsibility |
+|---|---|
+
+## Functional Requirements
+
+| ID | Requirement | Business Rule | Priority |
+|---|---|---|---|
+
+## Non Functional Requirements
+
+| Category | Requirement |
+|---|---|
+
+## Assumptions
+
+| ID | Assumption |
+|---|---|
+
+## Out Of Scope
+
+| ID | Item |
+|---|---|
+
+## Open Questions
+
+| ID | Question |
+|---|---|
+
+End with:
+REFINEMENT COMPLETE
+"""
 
 
-# -----------------------------
-# Step Buttons
-# -----------------------------
-b1, b2, b3 = st.columns(3)
+def delivery_pack_prompt(requirement):
+    return f"""
+You are a Product Owner and QA Lead.
+
+Using this refined requirement:
+
+{requirement}
+
+Generate SDLC delivery artifacts.
+
+Return ONLY:
+
+# 🚀 SDLC Artifact Pack
 
 
-# STEP 1
-with b1:
+## 📘 BRD Summary
 
-    if st.button(
-        "🔍 Analyze & Find Gaps",
-        use_container_width=True
-    ):
-
-        if requirement.strip():
-
-            with st.spinner(
-                "Analyzing requirement quality..."
-            ):
-                st.session_state.analysis = generate_ai_response(
-                    analyze_prompt(requirement)
-                )
-
-        else:
-            st.warning(
-                "Please enter requirement first"
-            )
+Include:
+- Objective
+- Scope
+- Business Need
+- Users
 
 
-# STEP 2
-with b2:
+## 👤 User Stories + Acceptance Criteria
 
-    refine_disabled = (
-        st.session_state.analysis is None
-    )
+Format:
 
-    if st.button(
-        "✨ Generate Improved Requirement",
-        disabled=refine_disabled,
-        use_container_width=True
-    ):
+### US-ID Title
 
-        with st.spinner(
-            "Improving requirement..."
-        ):
+As a
+I want
+So that
 
-            st.session_state.refined_requirement = generate_ai_response(
-                refine_prompt(requirement)
-            )
+Acceptance Criteria:
+
+Given
+When
+Then
 
 
-# STEP 3
-with b3:
+## 🧪 Test Cases
 
-    delivery_disabled = (
-        st.session_state.refined_requirement is None
-    )
-
-    if st.button(
-        "🚀 Generate SDLC Artifacts",
-        disabled=delivery_disabled,
-        use_container_width=True
-    ):
-
-        with st.spinner(
-            "Creating BRD, User Stories and Test Cases..."
-        ):
-
-            st.session_state.delivery_pack = generate_ai_response(
-                delivery_pack_prompt(
-                    st.session_state.refined_requirement
-                )
-            )
+| Test ID | Scenario | Steps | Expected Result |
+|---|---|---|---|
 
 
-# -----------------------------
-# Results
-# -----------------------------
+## 🔗 Requirement Traceability Matrix
 
-if st.session_state.analysis:
-
-    st.divider()
-
-    st.header("🔍 Requirement Intelligence Report")
-
-    st.markdown(
-        st.session_state.analysis
-    )
+| Requirement ID | User Story | Test Case |
+|---|---|---|
 
 
-if st.session_state.refined_requirement:
-
-    st.divider()
-
-    st.header("✨ Improved Requirement Specification")
-
-    st.markdown(
-        st.session_state.refined_requirement
-    )
-
-
-if st.session_state.delivery_pack:
-
-    st.divider()
-
-    st.header("🚀 SDLC Artifact Pack")
-
-    st.markdown(
-        st.session_state.delivery_pack
-    )
+End with:
+DELIVERY PACK COMPLETE
+"""
