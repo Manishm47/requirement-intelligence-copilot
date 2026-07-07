@@ -1,59 +1,41 @@
-# -----------------------------------------
-# Requirement Analysis Prompt
-# -----------------------------------------
-
 def analyze_prompt(requirement):
-
     return f"""
-You are a Lead Business Analyst and Product Owner.
+You are a Lead Business Analyst.
 
-Analyze the requirement or meeting transcript.
+Analyze this requirement:
 
-Requirement:
 {requirement}
 
-Generate a Requirement Intelligence Report.
+Create Requirement Intelligence Report.
 
-Keep response concise but complete.
-
-Use this exact format:
-
+Include:
 
 # 🔍 Requirement Intelligence Report
 
-
-## Requirement Maturity
-
-Stage:
-(Concept / BA Review Ready / Development Ready)
-
-Overall Readiness Score: XX/100
-
+## Requirement Score
+Give score out of 100
 
 ## Score Breakdown
 
-| Area | Score | Reason |
+- Completeness
+- Clarity
+- Business Rules
+- Security
+- User Experience
+- Test Readiness
+
+
+## Missing Requirements
+
+Create table:
+
+| Area | Missing Detail | Impact |
 |---|---|---|
-| Completeness | /10 | |
-| Clarity | /10 | |
-| Business Rules | /10 | |
-| Security | /10 | |
-| User Experience | /10 | |
-| Test Readiness | /10 | |
 
 
-## Missing Requirement Gaps
+## Risks
 
-| Gap ID | Area | Missing Information | Impact |
-|---|---|---|---|
-
-
-## Hidden Requirements Detected
-
-List implicit requirements that business did not mention.
-
-
-## Risk Analysis
+Create table:
 
 | Risk | Severity | Recommendation |
 |---|---|---|
@@ -61,37 +43,21 @@ List implicit requirements that business did not mention.
 
 ## Questions for Stakeholders
 
-| ID | Question | Purpose |
-|---|---|---|
+Create important BA clarification questions.
 
-
-## Final Recommendation
-
-
-End with:
-ANALYSIS COMPLETE
+Keep output concise but complete.
 """
 
 
-# -----------------------------------------
-# Requirement Refinement Prompt
-# -----------------------------------------
-
 def refine_prompt(requirement):
-
     return f"""
-You are a Senior Business Analyst.
+You are a Senior Product Owner.
 
-Convert the unclear requirement into a complete development-ready requirement.
+Improve this requirement:
 
-Requirement:
 {requirement}
 
-
-Generate refined specification.
-
-Use this exact format:
-
+Create:
 
 # ✨ Refined Requirement Specification
 
@@ -101,137 +67,36 @@ Use this exact format:
 
 ## Actors
 
-| Actor | Responsibility |
-|---|---|
-
 
 ## Functional Requirements
 
-| Requirement ID | Requirement | Business Rule | Priority |
+| ID | Requirement | Business Rule | Priority |
 |---|---|---|---|
 
 
 ## Non Functional Requirements
 
-| Category | Requirement |
-|---|---|
-
-
-## Exception Handling
-
-| Scenario | Expected Handling |
-|---|---|
-
 
 ## Assumptions
-
-| ID | Assumption |
-|---|---|
 
 
 ## Out Of Scope
 
-| ID | Item |
-|---|---|
-
 
 ## Open Questions
 
-| ID | Question |
-|---|---|
+
+After this create:
 
 
-End with:
-REFINEMENT COMPLETE
-"""
-
-
-# -----------------------------------------
-# SDLC Artifact Generation Prompt
-# -----------------------------------------
-
-def delivery_pack_prompt(requirement):
-
-    return f"""
-You are a Product Owner, Business Analyst and QA Lead.
-
-Generate SDLC delivery artifacts using the refined requirement.
-
-Requirement:
-{requirement}
-
-
-Generate complete but concise artifacts.
-
-
-# 🚀 SDLC Artifact Pack
-
-
-# 📘 BRD
-
-
-## Business Objective
-
-
-## Scope
-
-
-## Stakeholders
-
-| Role | Responsibility |
-|---|---|
-
-
-## Business Requirements
-
-| Requirement ID | Requirement | Priority |
-|---|---|---|
-
+# 📘 BRD Summary
 
 
 # 👤 User Stories + Acceptance Criteria
 
 
-Generate user stories.
-
-Format:
-
-
-## US-ID : Title
-
-As a <user>
-
-I want <functionality>
-
-So that <business value>
-
-
-Acceptance Criteria:
-
-Given:
-
-When:
-
-Then:
-
-
-
 # 🧪 Test Cases
 
 
-| Test ID | Scenario | Preconditions | Steps | Expected Result |
-|---|---|---|---|---|
-
-
-
-# 🔗 Requirement Traceability Matrix
-
-
-| Requirement ID | User Story ID | Test Case ID |
-|---|---|---|
-
-
-End with:
-
-DELIVERY PACK COMPLETE
+Create complete development ready output.
 """
