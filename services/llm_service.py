@@ -21,8 +21,8 @@ def generate_ai_response(prompt):
         response = model.generate_content(
             prompt,
             generation_config={
-                "temperature": 0.3,
-                "max_output_tokens": 2000
+                "temperature": 0.2,
+                "max_output_tokens": 6000
             }
         )
 
