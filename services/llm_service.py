@@ -9,7 +9,7 @@ def get_model():
     )
 
     model = genai.GenerativeModel(
-        "gemini-2.5-flash"
+        "gemini-2.0-flash-lite"
     )
 
     return model
