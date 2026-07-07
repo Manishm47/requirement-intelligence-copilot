@@ -1,21 +1,28 @@
-# prompts.py
-
+# -----------------------------------
+# Requirement Analysis Prompt
+# -----------------------------------
 
 def analyze_prompt(requirement):
 
     return f"""
-You are a Principal Business Analyst.
+You are a Lead Business Analyst.
 
 Analyze the below requirement.
 
 Requirement:
 {requirement}
 
+Create a Requirement Intelligence Report.
 
-Create Requirement Intelligence Report.
+Formatting Rules:
+- Do not use HTML tags like <br>.
+- Use clean Markdown formatting only.
+- Use proper Markdown tables.
+- Use bullet points instead of HTML line breaks.
+- Keep answers concise but complete.
+- Output must render correctly in Streamlit.
 
-Include:
-
+Return ONLY these sections:
 
 # 🔍 Requirement Intelligence Report
 
@@ -23,24 +30,20 @@ Include:
 ## Requirement Maturity
 
 Stage:
-Concept / Needs Refinement / Development Ready
 
-Overall Readiness Score:
-XX/100
+Overall Readiness Score: /100
 
 
 ## Score Breakdown
 
 | Area | Score | Reason |
 |---|---|---|
-
-Include:
-Completeness
-Clarity
-Business Rules
-Security
-User Experience
-Test Readiness
+| Completeness | | |
+| Clarity | | |
+| Business Rules | | |
+| Security | | |
+| User Experience | | |
+| Test Readiness | | |
 
 
 ## Missing Requirement Gaps
@@ -51,6 +54,8 @@ Test Readiness
 
 ## Hidden Requirements Detected
 
+List hidden functional and technical needs.
+
 
 ## Risk Analysis
 
@@ -60,8 +65,9 @@ Test Readiness
 
 ## Questions for Stakeholders
 
-| ID | Question | Purpose |
+| Question ID | Question | Purpose |
 |---|---|---|
+
 
 End with:
 ANALYSIS COMPLETE
@@ -69,25 +75,38 @@ ANALYSIS COMPLETE
 
 
 
+# -----------------------------------
+# Requirement Refinement Prompt
+# -----------------------------------
+
 def refine_prompt(requirement):
 
     return f"""
-You are a Senior Business Analyst.
+You are a Senior Product Owner.
 
-Convert requirement into development ready specification.
-
-Requirement:
+Improve this unclear requirement:
 
 {requirement}
 
+Create a development ready requirement specification.
 
-Create:
+Formatting Rules:
+- Do not use HTML tags like <br>.
+- Use clean Markdown formatting only.
+- Keep tables readable.
+- Do not put multiple sentences inside one table cell.
+- For multiple business rules use bullet points.
+- Keep output suitable for BA, PO and engineering teams.
+- Output must render correctly in Streamlit.
 
+Return ONLY:
 
 # ✨ Refined Requirement Specification
 
 
 ## Requirement Summary
+
+Provide clear business requirement summary.
 
 
 ## Actors
@@ -98,8 +117,14 @@ Create:
 
 ## Functional Requirements
 
-| ID | Requirement | Business Rule | Priority |
-|---|---|---|---|
+| ID | Requirement | Priority |
+|---|---|---|
+
+After the table add:
+
+### Business Rules
+
+List business rules separately using bullets.
 
 
 ## Non Functional Requirements
@@ -110,79 +135,101 @@ Create:
 
 ## Assumptions
 
+| ID | Assumption |
+|---|---|
+
 
 ## Out Of Scope
+
+| ID | Item |
+|---|---|
 
 
 ## Open Questions
 
+| ID | Question |
+|---|---|
+
 
 End with:
-
 REFINEMENT COMPLETE
 """
 
 
 
+# -----------------------------------
+# Delivery Pack Prompt
+# -----------------------------------
+
 def delivery_pack_prompt(requirement):
 
     return f"""
-You are a Product Owner, Business Analyst and QA Lead.
+You are a Product Owner and QA Lead.
 
-Generate delivery artifacts.
-
-Requirement:
+Using this refined requirement:
 
 {requirement}
 
+Generate SDLC delivery artifacts.
 
-Create:
+Formatting Rules:
+- Do not use HTML tags like <br>.
+- Use clean Markdown formatting only.
+- Keep tables readable.
+- Use professional Agile delivery format.
+- Output must render correctly in Streamlit.
 
+Return ONLY:
 
-# 🚀 Delivery Pack
+# 🚀 SDLC Artifact Pack
 
 
 ## 📘 BRD Summary
 
 Include:
 
-- Business Objective
+- Objective
+- Business Need
 - Scope
-- Stakeholders
-- Functional Requirements
+- In Scope
+- Out Of Scope
+- Users
 
 
 ## 👤 User Stories + Acceptance Criteria
 
-Format:
+Format each story as:
 
-Story ID:
+### User Story ID + Title
 
-As a:
-I want:
-So that:
+As a [user]
+
+I want [capability]
+
+So that [business value]
 
 
 Acceptance Criteria:
 
-Given:
-When:
-Then:
+Given
+
+When
+
+Then
+
 
 
 ## 🧪 Test Cases
 
-Create:
-
-Test ID
-Scenario
-Steps
-Expected Result
+| Test ID | Scenario | Steps | Expected Result |
+|---|---|---|---|
 
 
-## 🔗 Traceability Matrix
 
-Requirement ID | User Story | Test Case
+## 🔗 Requirement Traceability Matrix
+
+| Requirement ID | User Story | Test Case |
+|---|---|---|
 
 
 End with:
